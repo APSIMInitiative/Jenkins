@@ -14,7 +14,9 @@ set -e
 # after a manual retest.
 test -z ${PULL_ID:+x} && PULL_ID=$ghprbPullId
 test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
+test -z ${sha1:+x} && ( echo "sha1 not set"; exit 1 )
 echo PULL_ID=$PULL_ID
+echo sha1=$sha1
 
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
 
@@ -28,4 +30,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 container=apsiminitiative/apsimng-complete
 docker pull -q $container
-docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/jenkins -w /jenkins -e PULL_ID -e COMMIT_AUTHOR -e GRAPEVINE_PASSWORD -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL $container "${@:2}"
+docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/jenkins -w /jenkins -e PULL_ID -e sha1 -e COMMIT_AUTHOR -e GRAPEVINE_PASSWORD -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL $container "${@:2}"

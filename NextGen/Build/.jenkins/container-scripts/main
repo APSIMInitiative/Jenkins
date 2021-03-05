@@ -12,5 +12,7 @@ set -e
 git clone --quiet https://github.com/APSIMInitiative/ApsimX
 
 pushd ApsimX
+git fetch origin +refs/pull/$PULL_ID/*:refs/remotes/origin/pr/$PULL_ID/*
+git checkout $sha1
 FrameworkPathOverride=/usr/lib/mono/4.7.2-api/ dotnet build -v m --nologo -c Release ApsimX.sln
 popd
