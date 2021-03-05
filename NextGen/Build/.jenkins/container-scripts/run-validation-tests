@@ -2,7 +2,7 @@
 set -e
 
 # Clone and build apsim
-./main
+. ./main
 cd ApsimX
 apsimx=$(pwd)
 
