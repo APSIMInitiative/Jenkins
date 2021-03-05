@@ -15,10 +15,14 @@ set -e
 test -z ${PULL_ID:+x} && PULL_ID=$ghprbPullId
 test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 test -z ${sha1:+x} && ( echo "sha1 not set"; exit 1 )
+test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
+# Note: we don't exit early if COMMIT_AUTHOR isn't set. We can get that
+# from the git logs, but not until we've cloned the repo.
+
 echo PULL_ID=$PULL_ID
 echo sha1=$sha1
-
-test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
+echo COMMIT_AUTHOR=$COMMIT_AUTHOR
+export PULL_ID sha1 COMMIT_AUTHOR
 
 if [ $# -lt 1 ];
 then
