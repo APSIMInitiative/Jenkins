@@ -3,7 +3,7 @@ set -e
 
 # Clone and build apsim
 . ./main
-cd ApsimX
+cd $apsimx
 
 # Run unit tests
 nunit3-console Bin/UnitTests.dll

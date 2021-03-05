@@ -3,8 +3,7 @@ set -e
 
 # Clone and build apsim
 . ./main
-cd ApsimX
-apsimx=$(pwd)
+cd "$apsimx"
 
 # Extract password-protected datasets.
 grapevine=Prototypes/Grapevine
@@ -28,7 +27,7 @@ DATE=(${TIMESTAMP//-/ })
 ISSUE_ID=${arr[1]}
 VERSION=$DATE.$ISSUE_ID
 
-test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR="$(git log -1 --pretty=%an)"
 
 # Run P/O stats collector
 cd ..
@@ -37,4 +36,4 @@ cd APSIM.PerformanceTests
 git checkout refactor
 collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
-dotnet $collector/bin/Release/netcoreapp3.1/$collector.dll $PULL_ID $TIMESTAMP $COMMIT_AUTHOR $apsimx/Tests/Validation $apsimx/Tests/UnderReview
+dotnet $collector/bin/Release/netcoreapp3.1/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
