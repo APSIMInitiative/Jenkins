@@ -14,7 +14,7 @@ unzip -oP $GRAPEVINE_PASSWORD -d $grapevine $grapevine/Observations.zip
 7z -p$NPI_PASSWORD x $wheat/NPIValidation.7z -o$wheat
 
 # Run all .apsimx files outside of ./Tests and ./ApsimNG
-find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet NetCoreBin/Models.dll --verbose --run-tests
+find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/netcoreapp3.1/Models.dll --verbose --run-tests
 
 # Get build info for P/O stats collector
 temp_file=$(mktemp)
