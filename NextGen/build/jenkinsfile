@@ -17,7 +17,7 @@ pipeline {
                         CollectorURL = credentials('CollectorURL')
                     }
                     steps {
-                        sh './NextGen/Build/.jenkins/jenkins-main ./run-validation-tests'
+                        sh './NextGen/jenkins-main ./run-validation-tests'
                     }
                 }
                 stage('Unit Tests') {
@@ -25,7 +25,7 @@ pipeline {
                         label "linux && vm && small"
                     }
                     steps {
-                        sh './NextGen/Build/.jenkins/jenkins-main ./run-unit-tests'
+                        sh './NextGen/jenkins-main ./run-unit-tests'
                     }
                 }
             }

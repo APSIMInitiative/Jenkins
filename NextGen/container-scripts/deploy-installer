@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# This script runs inside docker on Jenkins build agents. It generates
+# an installer for the platform specified by the first argument, and
+# uploads the installer to apsimdev.apsim.info.
+#
+# Expects 1 argument (platform name - either macos or debian).
+
+set -e
+
+# Ensure that target platform name has been passed as an argument.
+usage="Usage: $0 <debian|macos>"
+test $# -eq 1 || (echo $usage; exit 1)
+
+# Check the platform name - exit if invalid, otherwise get a valid
+# runtime identifier to pass to MSBuild, as well as the name of the
+# script which will build the installer for this platform.
+if [ $platform -eq debian ]; then
+    runtime=linux-x64
+    script=./build-debian-installer
+    ext=deb
+elif [ $platform -eq macos ]; then
+    runtime=osx-x64
+    script=./build-macos-installer
+    ext=dmg
+else
+    echo $usage
+    exit 1
+fi
+
+platform=$1
+
+# Ensure that the PULL_ID environment variable is set.
+test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
+
+# Get the version number for the new release.
+version=./getVersion $PULL_ID
+ISSUE_NUMBER=$(echo $version | cut -d. -f 4)
+
+# Clone and build apsim.
+. ./main
+cd $apsimx
+
+# Publish the solution.
+dotnet publish -c Release -f netcoreapp3.1 -r $runtime \
+  --no-self-contained ApsimX.sln
+
+# Build the installer.
+bash $script
+
+# Finally, upload the installer.
+outfile=apsim-$version.$ext
+echo curl -s -u $APSIM_SITE_CREDS -T $outfile ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/

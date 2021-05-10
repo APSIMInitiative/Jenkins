@@ -1,0 +1,20 @@
+pipeline {
+    agent none
+    stages {
+        stage('main') {
+            parallel {
+                stage('Debian Installer') {
+                    agent {
+                        label "linux && vm && small"
+                    }
+                    environment {
+                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
+                    }
+                    steps {
+                        sh './NextGen/jenkins-main ./deploy-installer debian'
+                    }
+                }
+            }
+        }
+    }
+}

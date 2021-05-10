@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ $# -ne 1 ];
+then
+    echo "Usage: $0 <PULL_ID>" 1>&2
+    exit 1
+fi
+
+PULL_ID=$1
+resp=$(curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetPullRequestDetails?pullRequestID=$PULL_ID)
+ISSUE_ID=$(echo $resp | sed -e 's/<[^>]*>//g' | cut -d, -f2)
+TIMESTAMP=$(TZ='Australia/Brisbane' date +%Y.%m.%d)
+echo $TIMESTAMP.$ISSUE_ID
