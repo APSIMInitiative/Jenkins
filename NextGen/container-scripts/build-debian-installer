@@ -10,20 +10,15 @@
 # Exit immediately upon error
 set -e
 
-usage="Usage: $0 <Version> [outfile]"
-
 # Get version number (first argument).
 # Abort with error if no version number provided.
-if [[ $# -ne 1 ]];
-then
-    echo $usage
-    exit 1
-fi
+usage="Usage: $0 <Version> [outfile]"
+test $# -ge 1 || (echo $usage; exit 1)
 version=$1
 
 # Get apsimx path (path of repository root)
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-pushd "$DIR/../../.." >/dev/null 2>&1
+pushd "$DIR/ApsimX" >/dev/null 2>&1
 apsimx=$(pwd)
 popd >/dev/null 2>&1
 

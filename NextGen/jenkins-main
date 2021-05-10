@@ -18,7 +18,6 @@ test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
 # Note: we don't exit early if COMMIT_AUTHOR isn't set. We can get that
 # from the git logs, but not until we've cloned the repo.
 
-echo PULL_ID=$PULL_ID
 export PULL_ID COMMIT_AUTHOR
 
 if [ $# -lt 1 ];

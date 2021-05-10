@@ -12,8 +12,8 @@ set -e
 export apsimx="/tmp/ApsimX"
 git clone --quiet https://github.com/APSIMInitiative/ApsimX "$apsimx"
 
-pushd "$apsimx"
+pushd "$apsimx" >/dev/null
 git fetch origin +refs/pull/$PULL_ID/*:refs/remotes/origin/pr/$PULL_ID/*
 git checkout origin/pr/$PULL_ID/merge
 FrameworkPathOverride=/usr/lib/mono/4.7.2-api/ dotnet build -v m --nologo -c Release ApsimX.sln
-popd
+popd >/dev/null
