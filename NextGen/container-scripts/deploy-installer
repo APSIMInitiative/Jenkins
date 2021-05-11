@@ -44,9 +44,10 @@ cd $apsimx
 
 # Build the installer.
 echo Building installer...
-outfile=apsim-$version.$ext
-bash $apsimx/Setup/netcoreapp3.1/$script $version $outfile
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+outfile="$DIR"/apsim-$version.$ext
+bash $apsimx/Setup/netcoreapp3.1/$script $version "$outfile"
 
 # Finally, upload the installer.
 echo Uploading installer...
-curl -s -u $APSIM_SITE_CREDS -T $outfile ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
+curl -s -u $APSIM_SITE_CREDS -T "$outfile" ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
