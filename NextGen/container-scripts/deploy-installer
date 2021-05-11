@@ -11,6 +11,7 @@ set -e
 # Ensure that target platform name has been passed as an argument.
 usage="Usage: $0 <debian|macos>"
 test $# -eq 1 || (echo $usage; exit 1)
+test -z ${APSIM_SITE_CREDS:+x} && ( echo "APSIM_SITE_CREDS not set"; exit 1 )
 
 # Check the platform name - exit if invalid, otherwise get a valid
 # runtime identifier to pass to MSBuild, as well as the name of the
