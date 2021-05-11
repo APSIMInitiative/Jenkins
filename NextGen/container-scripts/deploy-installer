@@ -43,9 +43,9 @@ cd $apsimx
 
 # Build the installer.
 echo Building installer...
-bash $apsimx/Setup/netcoreapp3.1/$script
+outfile=apsim-$version.$ext
+bash $apsimx/Setup/netcoreapp3.1/$script $version $outfile
 
 # Finally, upload the installer.
 echo Uploading installer...
-outfile=apsim-$version.$ext
 echo curl -s -u $APSIM_SITE_CREDS -T $outfile ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
