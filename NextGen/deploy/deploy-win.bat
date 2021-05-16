@@ -27,6 +27,12 @@ git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
 if errorlevel 1 exit /b 1
 cd "%apsimx%"
 
+rem TEMP testing hack
+git remote add hol430 https://github.com/hol430/ApsimX
+git fetch hol430 feature/netcore-installers
+git checkout feature/netcore-installers
+rem END hack
+
 rem Get version info.
 echo Getting version number from web service...
 curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetPullRequestDetails?pullRequestID=%PULL_ID% > temp.txt
@@ -35,7 +41,6 @@ echo Done.
 for /F "tokens=1-6 delims==><" %%I IN (temp.txt) DO SET FULLRESPONSE=%%K
 del temp.txt
 for /F "tokens=1-6 delims=-" %%I IN ("%FULLRESPONSE%") DO SET BUILD_TIMESTAMP=%%I
-for /F "tokens=1-6 delims=," %%I IN ("%FULLRESPONSE%") DO SET DATETIMESTAMP=%%I
 for /F "tokens=1-6 delims=," %%I IN ("%FULLRESPONSE%") DO SET ISSUE_NUMBER=%%J
 set VERSION=%BUILD_TIMESTAMP%.%ISSUE_NUMBER%
 set YEAR=%date:~10,4%
@@ -59,6 +64,7 @@ iscc /Q "%setup%\apsimx.iss"
 if errorlevel 1 exit /b 1
 set "INSTALLER=apsim-%ISSUE_NUMBER%.exe"
 rename "%setup%\Output\ApsimSetup-%ISSUE_NUMBER%.exe" "%INSTALLER%"
+if errorlevel 1 exit /b 1
 
 rem Sign the installer.
 rem ----- This requires SignTool.exe to be on PATH.
