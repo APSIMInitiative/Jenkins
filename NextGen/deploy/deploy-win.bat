@@ -43,14 +43,14 @@ echo version=%VERSION%
 
 rem Version stamp the build.
 echo using System.Reflection; > "%apsimx%\Models\Properties\AssemblyVersion.cs"
-echo [assembly: AssemblyTitle("APSIM %APSIM_VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
-echo [assembly: AssemblyVersion("%APSIM_VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
-echo [assembly: AssemblyFileVersion("%APSIM_VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
+echo [assembly: AssemblyTitle("APSIM %VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
+echo [assembly: AssemblyVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
+echo [assembly: AssemblyFileVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\ApsimNG\Properties\AssemblyVersion.cs"
 
 rem Build the solution.
-dotnet public -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained ApsimNG
+dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained ApsimNG
 if errorlevel 1 exit /b 1
 
 rem Generate the installer.
