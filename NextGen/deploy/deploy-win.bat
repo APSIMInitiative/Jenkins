@@ -25,8 +25,7 @@ rem Clone the repository.
 set "apsimx=%TEMP%\ApsimX"
 git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
 if errorlevel 1 exit /b 1
-cd ApsimX
-set "apsimx=%cd%"
+cd "%apsimx%"
 
 rem Get version info.
 echo Getting version number from web service...
