@@ -22,6 +22,8 @@ if not defined APSIM_CERT_PWD (echo APSIM_CERT_PWD not set && exit /b 1)
 if not defined APSIM_CERT (echo APSIM_CERT not set && exit /b 1)
 if not defined APSIM_SITE_CREDS (echo APSIM_SITE_CREDS not set && exit /b 1)
 
+call C:\BuildTools\Common7\Tools\VsDevCmd.bat
+
 rem Clone the repository.
 set "apsimx=%TEMP%\ApsimX"
 git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
