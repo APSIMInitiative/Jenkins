@@ -46,7 +46,7 @@ cd $apsimx
 
 # Build the installer.
 echo Building installer...
-outfile="$DIR"/apsim-$version.$ext
+outfile="$DIR"/apsim-$ISSUE_NUMBER.$ext
 bash $apsimx/Setup/netcoreapp3.1/$script $version "$outfile"
 
 # Finally, upload the installer.
