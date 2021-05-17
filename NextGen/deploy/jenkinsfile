@@ -38,6 +38,14 @@ pipeline {
                         sh './NextGen/jenkins-main ./deploy-installer macos'
                     }
                 }
+                stage('Docker Images') {
+                    agent {
+                        label "linux && vm && small"
+                    }
+                    steps {
+                        sh './NextGen/docker/deploy-docker'
+                    }
+                }
             }
         }
     }

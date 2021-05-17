@@ -16,6 +16,7 @@ setlocal enableDelayedExpansion
 setlocal
 
 rem Ensure the necessary environment variables are set.
+if not defined PULL_ID (set PULL_ID=%ghprbPullId%)
 if not defined PULL_ID (echo PULL_ID not set && exit /b 1)
 if not defined APSIM_CERT_PWD (echo APSIM_CERT_PWD not set && exit /b 1)
 if not defined APSIM_CERT (echo APSIM_CERT not set && exit /b 1)
@@ -63,13 +64,13 @@ set "setup=%apsimx%\Setup\netcoreapp3.1\windows"
 iscc /Q "%setup%\apsimx.iss"
 if errorlevel 1 exit /b 1
 set "INSTALLER=apsim-%ISSUE_NUMBER%.exe"
-rename "%setup%\Output\ApsimSetup-%ISSUE_NUMBER%.exe" "%INSTALLER%"
+rename "%setup%\Output\ApsimSetup.exe" "%INSTALLER%"
 if errorlevel 1 exit /b 1
 
 rem Sign the installer.
 rem ----- This requires SignTool.exe to be on PATH.
 rem ----- Also assumes that APSIM_CERT_PWD is an existing environment variable (it's set by jenkins)
-SignTool sign /q /as /fd sha256 /tr %TIMESTAMP% /td sha256 /f %CERTIFICATE% /p %APSIM_CERT_PWD% %INSTALLER%
+SignTool sign /q /as /fd sha256 /tr %BUILD_TIMESTAMP% /td sha256 /f %APSIM_CERT% /p %APSIM_CERT_PWD% %INSTALLER%
 if errorlevel 1 exit /b 1
 SignTool verify /pa /v /d %INSTALLER%
 if errorlevel 1 exit /b 1
