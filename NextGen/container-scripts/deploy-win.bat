@@ -64,7 +64,7 @@ set "setup=%apsimx%\Setup\netcoreapp3.1\windows"
 iscc /Q "%setup%\apsimx.iss"
 if errorlevel 1 exit /b 1
 set "INSTALLER=apsim-%ISSUE_NUMBER%.exe"
-rename "%setup%\Output\ApsimSetup.exe" "%INSTALLER%"
+move "%setup%\Output\ApsimSetup.exe" "%INSTALLER%"
 if errorlevel 1 exit /b 1
 
 rem Sign the installer.
