@@ -5,7 +5,7 @@ rem installer.
 
 rem Need to copy the code signing certificate into the container.
 mkdir cert
-cp "%APSIM_CERT%" cert\apsim.p12
+copy "%APSIM_CERT%" cert\apsim.p12
 
 set container=apsiminitiative/apsimng-build-win
 docker pull -q %container%
