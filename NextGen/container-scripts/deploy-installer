@@ -52,4 +52,24 @@ bash $apsimx/Setup/netcoreapp3.1/$script $version "$outfile"
 # Finally, upload the installer.
 echo Uploading installer...
 url=ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
-curl --silent --show-error --user $APSIM_SITE_CREDS --upload-file "$outfile" --retry 3 --retry-all-errors $url
+
+function upload() {
+    curl --silent --show-error --user $APSIM_SITE_CREDS --upload-file "$outfile" --retry 3
+    return $?
+}
+
+retry=0
+maxRetries=3
+interval=60 # in seconds
+until [ ${retry} -ge ${maxRetries} ]
+do
+	upload && break
+	retry=$[${retry}+1]
+	echo "Retrying [${retry}/${maxRetries}] in ${interval}(s) "
+	sleep ${interval}
+    interval=$[${interval} * 2]
+done
+if [ ${retry} -ge ${maxRetries} ]; then
+  echo "Failed to upload installer after ${maxRetries} attempts!"
+  exit 1
+fi
