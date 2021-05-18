@@ -54,7 +54,7 @@ echo Uploading installer...
 url=ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
 
 function upload() {
-    curl --silent --show-error --user $APSIM_SITE_CREDS --upload-file "$outfile" --retry 3
+    curl --silent --show-error --user $APSIM_SITE_CREDS --upload-file "$outfile" --retry 3 $url
     return $?
 }
 
