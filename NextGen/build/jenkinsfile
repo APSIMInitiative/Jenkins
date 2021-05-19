@@ -28,7 +28,7 @@ pipeline {
                         sh './NextGen/jenkins-main ./run-unit-tests'
                     }
                 }
-                /*stage('Windows Installer') {
+                stage('Windows Installer') {
                     agent {
                         label "windows && vm && small"
                     }
@@ -62,7 +62,7 @@ pipeline {
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer macos'
                     }
-                }*/
+                }
             }
         }
     }
