@@ -8,7 +8,6 @@ pipeline {
                         label "linux && vm && large"
                     }
                     environment {
-                        GRAPEVINE_PASSWORD = credentials('grapevine-validation-password')
                         SOYBEAN_PASSWORD = credentials('soybean-validation-password')
                         NPI_PASSWORD = credentials('npi-archive-password')
                         TESTDB = credentials('TESTDB')

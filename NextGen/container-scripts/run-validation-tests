@@ -6,10 +6,8 @@ set -e
 cd "$apsimx"
 
 # Extract password-protected datasets.
-grapevine=Prototypes/Grapevine
 soybean=Tests/Validation/Soybean
 wheat=Tests/Validation/Wheat
-unzip -oP $GRAPEVINE_PASSWORD -d $grapevine $grapevine/Observations.zip
 7z -p$SOYBEAN_PASSWORD x $soybean/ObservedFACTS.7z -o$soybean
 7z -p$NPI_PASSWORD x $wheat/NPIValidation.7z -o$wheat
 
