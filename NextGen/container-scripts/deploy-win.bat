@@ -43,7 +43,7 @@ for /F "tokens=1-6 delims==><" %%I IN (temp.txt) DO SET FULLRESPONSE=%%K
 del temp.txt
 for /F "tokens=1-6 delims=-" %%I IN ("%FULLRESPONSE%") DO SET BUILD_TIMESTAMP=%%I
 for /F "tokens=1-6 delims=," %%I IN ("%FULLRESPONSE%") DO SET ISSUE_NUMBER=%%J
-set VERSION=%BUILD_TIMESTAMP%.%ISSUE_NUMBER%
+set VERSION=%BUILD_TIMESTAMP:.0=.%.%ISSUE_NUMBER%
 set YEAR=%date:~10,4%
 echo version=%VERSION%
 
