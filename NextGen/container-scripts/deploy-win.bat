@@ -27,12 +27,11 @@ set "apsimx=%TEMP%\ApsimX"
 git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
 if errorlevel 1 exit /b 1
 cd "%apsimx%"
-
-rem TEMP testing hack
-git remote add hol430 https://github.com/hol430/ApsimX
-git fetch hol430 feature/netcore-installers
-git checkout feature/netcore-installers
-rem END hack
+rem Checkout the pull request's merge commit.
+git fetch origin +refs/pull/%PULL_ID%/*:refs/remotes/origin/pr/%PULL_ID%/*
+if errorlevel 1 exit /b 1
+git checkout origin/pr/%PULL_ID%/merge
+if errorlevel 1 exit /b 1
 
 rem Get version info.
 echo Getting version number from web service...
