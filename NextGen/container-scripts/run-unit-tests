@@ -6,4 +6,4 @@ set -e
 cd $apsimx
 
 # Run unit tests
-nunit3-console bin/Release/net472/UnitTests.dll
+dotnet test
