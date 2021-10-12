@@ -49,9 +49,10 @@ cd "$apsimx"
 if [[ -d $autodocs ]]
 then
     # This will generate autodocs to $apsimx/autodocs
-    bin/Release/netcoreapp3.1/APSIM.Documentation
+    output="$PWD/documents"
+    bin/Release/netcoreapp3.1/APSIM.Documentation $output
     # rsync -arz $version admin@apsimdev.apsim.info:/cygdrive/d/Websites/ApsimX/Releases/
-    for f in autodocs/*
+    for f in $output/*
     do
         curl -u "$APSIM_SITE_CREDS" -T "$f" --ftp-create-dirs ftp://apsimdev.apsim.info/APSIM/Releases/$version/
     done
