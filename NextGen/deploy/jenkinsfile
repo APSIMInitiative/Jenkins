@@ -2,50 +2,16 @@ pipeline {
     agent none
     stages {
         stage('main') {
-            parallel {
-                stage('Windows Installer') {
-                    agent {
-                        label "windows && vm && small"
-                    }
-                    environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
-				        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
-				        APSIM_CERT = credentials('apsim-code-signing-cert')
-                    }
-                    steps {
-                        bat './NextGen/deploy/deploy-win.bat'
-                    }
-                }
-                stage('Debian Installer') {
-                    agent {
-                        label "linux && vm && small"
-                    }
-                    environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
-                    }
-                    steps {
-                        sh './NextGen/jenkins-main ./deploy-installer debian'
-                    }
-                }
-                stage('MacOS Installer') {
-                    agent {
-                        label "linux && vm && small"
-                    }
-                    environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
-                    }
-                    steps {
-                        sh './NextGen/jenkins-main ./deploy-installer macos'
-                    }
-                }
-                stage('Docker Images') {
-                    agent {
-                        label "linux && vm && small"
-                    }
-                    steps {
-                        sh './NextGen/docker/deploy-docker'
-                    }
-                }
+            agent {
+                label "linux && vm && small"
+            }
+            environment {
+                APSIM_SITE_CREDS = credentials('apsim-site-creds')
+				CHANGE_DB_CREDS = credentials('change-db-creds')
+				NETLIFY_BUILD_HOOK = credentials('netlify-build-hook')
+            }
+            steps {
+                sh './NextGen/jenkins-main ./deploy'
             }
         }
     }
