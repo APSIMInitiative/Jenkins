@@ -30,4 +30,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 container=apsiminitiative/apsimng-complete
 docker pull -q $container
-docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/container-scripts -w /container-scripts -e PULL_ID -e COMMIT_AUTHOR -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e CORNSOY_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL -e APSIM_SITE_CREDS $container "${@:2}"
+docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/container-scripts -w /container-scripts -e PULL_ID -e COMMIT_AUTHOR -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e CORNSOY_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL -e APSIM_SITE_CREDS -e CHANGE_DB_CREDS_PSW $container "${@:2}"
