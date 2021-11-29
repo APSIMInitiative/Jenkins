@@ -15,6 +15,6 @@ test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 test -z ${CHANGE_DB_CREDS_PSW:+x} && ( echo "CHANGE_DB_CREDS_PSW not set"; exit 1 )
 test -z ${NETLIFY_BUILD_HOOK:+x} && ( echo "NETLIFY_BUILD_HOOK not set"; exit 1 )
 
-curl --fail-with-body -s "https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/AddBuild?pullRequestNumber=$PULL_ID&ChangeDBPassword=$CHANGE_DB_CREDS_PSW"
-curl --fail-with-body -s "https://registration.apsim.info/api/updateproducts"
-curl --fail-with-body -X POST -d {} https://api.netlify.com/build_hooks/$NETLIFY_BUILD_HOOK
+curl -fs "https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/AddBuild?pullRequestNumber=$PULL_ID&ChangeDBPassword=$CHANGE_DB_CREDS_PSW"
+curl -fs "https://registration.apsim.info/api/updateproducts"
+curl -fsX POST -d {} https://api.netlify.com/build_hooks/$NETLIFY_BUILD_HOOK
