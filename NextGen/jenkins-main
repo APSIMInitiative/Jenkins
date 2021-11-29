@@ -15,6 +15,7 @@ set -e
 test -z ${PULL_ID:+x} && PULL_ID=$ghprbPullId
 test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
+test -z ${MERGE_COMMIT} && MERGE_COMMIT=$sha1
 # Note: we don't exit early if COMMIT_AUTHOR isn't set. We can get that
 # from the git logs, but not until we've cloned the repo.
 
@@ -30,4 +31,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 container=apsiminitiative/apsimng-complete
 docker pull -q $container
-docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/container-scripts -w /container-scripts -e PULL_ID -e COMMIT_AUTHOR -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e CORNSOY_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL -e APSIM_SITE_CREDS -e CHANGE_DB_CREDS_PSW -e NETLIFY_BUILD_HOOK $container "${@:2}"
+docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/container-scripts -w /container-scripts -e MERGE_COMMIT -e PULL_ID -e COMMIT_AUTHOR -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e CORNSOY_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL -e APSIM_SITE_CREDS -e CHANGE_DB_CREDS_PSW -e NETLIFY_BUILD_HOOK $container "${@:2}"
