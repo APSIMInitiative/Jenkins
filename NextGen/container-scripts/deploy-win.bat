@@ -21,6 +21,7 @@ if not defined PULL_ID (echo PULL_ID not set && exit /b 1)
 if not defined APSIM_CERT_PWD (echo APSIM_CERT_PWD not set && exit /b 1)
 if not defined APSIM_CERT (echo APSIM_CERT not set && exit /b 1)
 if not defined APSIM_SITE_CREDS (echo APSIM_SITE_CREDS not set && exit /b 1)
+if not defined MERGE_COMMIT (echo MERGE_COMMIT not set && exit /b 1)
 
 rem Clone the repository.
 set "apsimx=%TEMP%\ApsimX"
@@ -28,9 +29,7 @@ git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
 if errorlevel 1 exit /b 1
 cd "%apsimx%"
 rem Checkout the pull request's merge commit.
-git fetch origin +refs/pull/%PULL_ID%/*:refs/remotes/origin/pr/%PULL_ID%/*
-if errorlevel 1 exit /b 1
-git checkout origin/pr/%PULL_ID%/merge
+git checkout %MERGE_COMMIT%
 if errorlevel 1 exit /b 1
 
 rem Get version info.
