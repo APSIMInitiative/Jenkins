@@ -38,6 +38,17 @@ pipeline {
                         sh './NextGen/jenkins-main ./deploy-installer macos'
                     }
                 }
+                stage('Docker') {
+                    agent {
+                        label "linux && vm && small"
+                    }
+                    environment {
+                        DOCKERHUB_TOKEN = credentials("docker-pat")
+                    }
+                    steps {
+                        sh './NextGen/deploy-docker apsimng'
+                    }
+                }
             }
         }
         stage('deploy') {

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# This script runs on Jenkins build agents, but /not/ inside a docker
+# container. It builds a docker image and pushes the image to dockerhub.
+#
+# Expects 1 argument, which is the name of the image to be pushed.
+# This corresponds to a directory in the APSIM.Docker repository.
+#
+# Also requires that the DOCKERHUB_TOKEN environment variable be set.
+# This should be a valid personal access token for dockerhub and will
+# be used to push the built image to dockerhub.
+
+set -euo pipefail
+
+# Ensure that the necessary inputs have been provioded.
+usage="Usage: $0 <imagename>"
+test $# -eq 1 || (echo $usage; exit 1)
+test -z ${DOCKERHUB_TOKEN:+x} && ( echo "DOCKERHUB_TOKEN not set"; exit 1 )
+test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
+image=$1
+
+# Get directory of script.
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+# Get version number (note: this is just the revision number).
+url="https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetNextVersion"
+version_body=$(curl --fail-with-body -s "$url")
+version=`$DIR/container-scripts/get-version`
+echo version=$version
+
+# Generate an image name.
+full_image=apsiminitiative/$image:$version
+
+# This is the git ref which will be used to build apsim.
+commit=origin/pr/$PULL_ID/merge
+
+# Clone APSIM.Docker repo - this is where the dockerfiles live.
+git clone https://github.com/APSIMInitiative/APSIM.Docker
+cd APSIM.Docker/NextGen/$image
+
+# Build image, then login and push to dockerhub.
+docker build --build-arg version --build-arg commit -t $full_image .
+docker login -u hol430 -p"$DOCKERHUB_TOKEN"
+docker push $full_image
