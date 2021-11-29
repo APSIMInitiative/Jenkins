@@ -35,7 +35,7 @@ test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 
 # Get the version number for the new release.
 echo Retrieving version info...
-version=$(./get-version $PULL_ID)
+version=$(./get-revision $PULL_ID)
 year=$(TZ=Australia/Brisbane date +%-Y)
 month=$(TZ=Australia/Brisbane date +%-m)
 full_version=$year.$month.$version.0

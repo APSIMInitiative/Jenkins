@@ -1,0 +1,5 @@
+#!/bin/sh
+
+url='https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetNextVersion'
+VERSION=$(curl -ks "$url" | sed -e 's/<[^>]*>//g' | cut -d'<' -f1)
+echo $VERSION
