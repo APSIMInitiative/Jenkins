@@ -36,6 +36,9 @@ test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 # Get the version number for the new release.
 echo Retrieving version info...
 version=$(./get-version $PULL_ID)
+year=$(TZ=Australia/Brisbane date +%-Y)
+month=$(TZ=Australia/Brisbane date +%-m)
+full_version=$year.$month.$version.0
 ISSUE_NUMBER=$(echo $version | cut -d. -f 4)
 
 # Clone and build apsim.
@@ -45,8 +48,8 @@ cd $apsimx
 
 # Build the installer.
 echo Building installer...
-outfile="$DIR"/apsim-$ISSUE_NUMBER.$ext
-bash $apsimx/Setup/netcoreapp3.1/$script $version "$outfile"
+outfile="$DIR"/apsim-$version.$ext
+bash $apsimx/Setup/netcoreapp3.1/$script $full_version "$outfile"
 
 # Finally, upload the installer.
 echo Uploading installer...

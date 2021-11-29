@@ -35,20 +35,20 @@ if errorlevel 1 exit /b 1
 
 rem Get version info.
 echo Getting version number from web service...
-curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetPullRequestDetails?pullRequestID=%PULL_ID% > temp.txt
+curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetNextVersion > temp.txt
 if errorlevel 1 exit /b 1
 echo Done.
-for /F "tokens=1-6 delims==><" %%I IN (temp.txt) DO SET FULLRESPONSE=%%K
+for /F "tokens=3 delims==><" %%I IN (temp.txt) DO SET REVISION=%%I
 del temp.txt
-for /F "tokens=1-6 delims=-" %%I IN ("%FULLRESPONSE%") DO SET BUILD_TIMESTAMP=%%I
-for /F "tokens=1-6 delims=," %%I IN ("%FULLRESPONSE%") DO SET ISSUE_NUMBER=%%J
-set VERSION=%BUILD_TIMESTAMP:.0=.%.%ISSUE_NUMBER%
 set YEAR=%date:~10,4%
+set MONTH=%date:~4,2%
+set VERSION=%YEAR%.%MONTH%.%REVISION%.0
+set SHORT_VERSION=%YEAR%.%MONTH%.%REVISION%
 echo version=%VERSION%
 
 rem Version stamp the build.
 echo using System.Reflection; > "%apsimx%\Models\Properties\AssemblyVersion.cs"
-echo [assembly: AssemblyTitle("APSIM %VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
+echo [assembly: AssemblyTitle("APSIM %SHORT_VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyFileVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
