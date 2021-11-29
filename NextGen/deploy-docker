@@ -6,9 +6,12 @@
 # Expects 1 argument, which is the name of the image to be pushed.
 # This corresponds to a directory in the APSIM.Docker repository.
 #
-# Also requires that the DOCKERHUB_TOKEN environment variable be set.
-# This should be a valid personal access token for dockerhub and will
-# be used to push the built image to dockerhub.
+# Also requires that the following environment variables are set:
+# 
+# - DOCKERHUB_TOKEN: A personal access token for dockerhub, with access
+#                    to the AI's dockerhub account.
+# - PULL_ID:         ID of the pull request which was merged
+# - MERGE_COMMIT:    Merge commit of the PR which was merged.
 
 set -euo pipefail
 
@@ -17,6 +20,7 @@ usage="Usage: $0 <imagename>"
 test $# -eq 1 || (echo $usage; exit 1)
 test -z ${DOCKERHUB_TOKEN:+x} && ( echo "DOCKERHUB_TOKEN not set"; exit 1 )
 test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
+test -z ${MERGE_COMMIT:+x} && ( echo "MERGE_COMMIT not set"; exit 1 )
 image=$1
 
 # Get directory of script.
@@ -32,7 +36,7 @@ echo version=$version
 full_image=apsiminitiative/$image:$version
 
 # This is the git ref which will be used to build apsim.
-commit=origin/pr/$PULL_ID/merge
+commit=$MERGE_COMMIT
 
 # Clone APSIM.Docker repo - this is where the dockerfiles live.
 git clone https://github.com/APSIMInitiative/APSIM.Docker
