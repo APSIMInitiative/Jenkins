@@ -33,7 +33,9 @@ version=`$DIR/container-scripts/get-revision`
 echo version=$version
 
 # Generate an image name.
-full_image=apsiminitiative/$image:$version
+base_image_name=apsiminitiative/$image
+full_image=$base_image_name:$version
+image_latest=$base_image_name:latest
 
 # This is the git ref which will be used to build apsim.
 commit=$MERGE_COMMIT
@@ -44,5 +46,7 @@ cd APSIM.Docker/NextGen/$image
 
 # Build image, then login and push to dockerhub.
 docker build --build-arg version --build-arg commit -t $full_image .
+docker tag $full_image $image_latest
 docker login -u hol430 -p"$DOCKERHUB_TOKEN"
 docker push $full_image
+docker push $image_latest
