@@ -2,7 +2,7 @@
 #
 # This is the main script which handles jenkins builds of ApsimX.
 # This script will run a script specified by first argument inside
-# an apsimng-complete docker image. The script must be located
+# an apsimng-build docker image. The script must be located
 # inside the container-scripts directory.
 #
 # Additionally, the PULL_ID variable must be set before running
@@ -29,6 +29,6 @@ fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-container=apsiminitiative/apsimng-complete
+container=apsiminitiative/apsimng-build
 docker pull -q $container
 docker run --rm --entrypoint=$1 -v "$DIR/container-scripts":/container-scripts -w /container-scripts -e MERGE_COMMIT -e PULL_ID -e COMMIT_AUTHOR -e SOYBEAN_PASSWORD -e NPI_PASSWORD -e CORNSOY_PASSWORD -e TESTDB -e NEWDB -e OLDDB -e CollectorURL -e APSIM_SITE_CREDS -e CHANGE_DB_CREDS_PSW -e NETLIFY_BUILD_HOOK $container "${@:2}"
