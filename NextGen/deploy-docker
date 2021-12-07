@@ -23,10 +23,11 @@ test -z ${MERGE_COMMIT:+x} && ( echo "MERGE_COMMIT not set"; exit 1 )
 # Get directory of script.
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-# Get version number (note: this is just the revision number).
-url="https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetNextVersion"
-version_body=$(curl -fs "$url")
-version=`$DIR/container-scripts/get-revision`
+# Get version number.
+revision=`$DIR/container-scripts/get-revision`
+year=$(TZ=Australia/Brisbane date +%-Y)
+month=$(TZ=Australia/Brisbane date +%-m)
+version=$year.$month.$revision.0
 echo version=$version
 
 # Clone APSIM.Docker repo - this is where the dockerfiles live.
@@ -34,7 +35,6 @@ git clone https://github.com/APSIMInitiative/APSIM.Docker
 docker_repo="${PWD}/APSIM.Docker"
 
 # This is the git ref which will be used to build apsim.
-commit=$MERGE_COMMIT
 
 build_image() {
     image=$1
@@ -42,11 +42,12 @@ build_image() {
 
     # Generate an image name.
     base_image_name=apsiminitiative/$image
-    full_image=$base_image_name:$version
+    full_image=$base_image_name:$revision
     image_latest=$base_image_name:latest
 
     # Build image, then login and push to dockerhub.
-    docker build --build-arg version --build-arg commit -t $full_image .
+    echo docker build --build-arg version --build-arg commit -t $full_image .
+    docker build --build-arg version=$version --build-arg commit=$MERGE_COMMIT -t $full_image .
     docker tag $full_image $image_latest
     docker login -u hol430 -p"$DOCKERHUB_TOKEN"
     docker push $full_image
