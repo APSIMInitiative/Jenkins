@@ -47,12 +47,11 @@ echo version=%VERSION%
 
 rem Version stamp the build.
 echo using System.Reflection; > "%apsimx%\Models\Properties\AssemblyVersion.cs"
-echo [assembly: AssemblyTitle("APSIM %SHORT_VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyFileVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\ApsimNG\Properties\AssemblyVersion.cs"
-
+copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\APSIM.Server\Properties\AssemblyVersion.cs"
 rem Build the solution.
 dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\ApsimNG\ApsimNG.csproj"
 dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\Models\Models.csproj"
