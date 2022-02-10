@@ -31,14 +31,12 @@ version=$year.$month.$revision.0
 echo version=$version
 
 # Clone APSIM.Docker repo - this is where the dockerfiles live.
-git clone https://github.com/APSIMInitiative/APSIM.Docker
 docker_repo="${PWD}/APSIM.Docker"
-
-# This is the git ref which will be used to build apsim.
+git clone https://github.com/APSIMInitiative/APSIM.Docker "$docker_repo"
 
 build_image() {
     image=$1
-    cd "$docker_repo/NextGen/$image"
+    cd "$docker_repo/NextGen/apsimng"
 
     # Generate an image name.
     base_image_name=apsiminitiative/$image
@@ -46,8 +44,7 @@ build_image() {
     image_latest=$base_image_name:latest
 
     # Build image, then login and push to dockerhub.
-    echo docker build --build-arg version --build-arg commit -t $full_image .
-    docker build --build-arg version=$version --build-arg commit=$MERGE_COMMIT -t $full_image .
+    docker build --build-arg version=$version --build-arg commit=$MERGE_COMMIT -t $full_image --target $image .
     docker tag $full_image $image_latest
     docker login -u hol430 -p"$DOCKERHUB_TOKEN"
     docker push $full_image
