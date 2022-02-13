@@ -3,11 +3,15 @@ set -euo pipefail
 
 # Clone and build apsim
 . ./main
-version=$(./get-version $PULL_ID)
+echo Retrieving version info...
+version=$(./get-revision $PULL_ID)
+year=$(TZ=Australia/Brisbane date +%-Y)
+month=$(TZ=Australia/Brisbane date +%-m)
+full_version=$year.$month.$version.0
 
 cd "$apsimx"
 
-sed -i -e "s/0\.0\.0\.0/$version/g" "$apsimx/Models/Properties/AssemblyVersion.cs"
+sed -i -e "s/0\.0\.0\.0/$full_version/g" "$apsimx/Models/Properties/AssemblyVersion.cs"
 dotnet build -c Release ApsimX.sln
 
 # Extract password-protected datasets.
