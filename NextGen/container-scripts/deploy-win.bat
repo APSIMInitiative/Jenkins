@@ -40,7 +40,7 @@ echo Done.
 for /F "tokens=3 delims==><" %%I IN (temp.txt) DO SET REVISION=%%I
 del temp.txt
 set YEAR=%date:~10,4%
-set MONTH=%date:~4,2%
+set /a MONTH=%date:~4,2%
 set VERSION=%YEAR%.%MONTH%.%REVISION%.0
 set SHORT_VERSION=%YEAR%.%MONTH%.%REVISION%
 echo version=%VERSION%
