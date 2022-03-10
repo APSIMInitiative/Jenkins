@@ -34,10 +34,10 @@ if errorlevel 1 exit /b 1
 
 rem Get version info.
 echo Getting version number from web service...
-curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetNextVersion > temp.txt
+curl -s https://builds.apsim.info/api/nextgen/nextversion > temp.txt
 if errorlevel 1 exit /b 1
 echo Done.
-for /F "tokens=3 delims==><" %%I IN (temp.txt) DO SET REVISION=%%I
+SET /p REVISION=<temp.txt
 del temp.txt
 set YEAR=%date:~10,4%
 set /a MONTH=%date:~4,2%

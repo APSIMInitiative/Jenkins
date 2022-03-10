@@ -25,16 +25,8 @@ cornsoy=Tests/Validation/System/FACTS_CornSoy
 # Run all .apsimx files outside of ./Tests and ./ApsimNG
 find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/netcoreapp3.1/Models.dll --verbose --run-tests
 
-# Get build info for P/O stats collector
-temp_file=$(mktemp)
-curl -ks https://apsimdev.apsim.info/APSIM.Builds.Service/Builds.svc/GetPullRequestDetails?pullRequestID=$PULL_ID >$temp_file
-response=$(sed -e 's/<[^>]*>//g' $temp_file)
-rm $temp_file
-arr=(${response//,/ })
-TIMESTAMP=${arr[0]}
-DATE=(${TIMESTAMP//-/ })
-ISSUE_ID=${arr[1]}
-VERSION=$DATE.$ISSUE_ID
+# Get date in yyyy.M.d-HH:mm format
+TIMESTAMP=`date +%Y.%-m.%-d-%-H:%-M`
 
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR="$(git log -1 --pretty=%an)"
 
