@@ -26,7 +26,7 @@ cornsoy=Tests/Validation/System/FACTS_CornSoy
 find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/netcoreapp3.1/Models.dll --verbose --run-tests
 
 # Get date in yyyy.M.d-HH:mm format
-TIMESTAMP=`date +%Y.%-m.%-d-%-H:%-M`
+TIMESTAMP=`date +%Y.%-m.%-d-%H:%M`
 
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR="$(git log -1 --pretty=%an)"
 
