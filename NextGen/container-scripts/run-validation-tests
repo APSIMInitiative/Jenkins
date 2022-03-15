@@ -49,7 +49,7 @@ then
     bin/Release/netcoreapp3.1/APSIM.Documentation $output
     for f in $output/*
     do
-        curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$f" "https://builds.apsim.info/api/nextgen/upload/docs?pullRequestNumber=$PULL_ID"
+        curl -fX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$f" "https://builds.apsim.info/api/nextgen/upload/docs?pullRequestNumber=$PULL_ID"
     done
     echo "Autodocs successfully generated and uploaded."
 fi
