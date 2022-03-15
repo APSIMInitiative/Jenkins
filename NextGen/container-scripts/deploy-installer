@@ -2,7 +2,7 @@
 #
 # This script runs inside docker on Jenkins build agents. It generates
 # an installer for the platform specified by the first argument, and
-# uploads the installer to apsimdev.apsim.info.
+# uploads the installer to builds.apsim.info.
 #
 # Expects 1 argument (platform name - either macos or debian).
 
@@ -11,20 +11,28 @@ set -e
 # Ensure that target platform name has been passed as an argument.
 usage="Usage: $0 <debian|macos>"
 test $# -eq 1 || (echo $usage; exit 1)
-test -z ${APSIM_SITE_CREDS:+x} && ( echo "APSIM_SITE_CREDS not set"; exit 1 )
+test -z ${BUILDS_JWT:+x} && ( echo "BUILDS_JWT not set"; exit 1 )
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Check the platform name - exit if invalid, otherwise get a valid
 # runtime identifier to pass to MSBuild, as well as the name of the
 # script which will build the installer for this platform.
+#
+# build_platform is the platform name expected by the APSIM.Builds API. It
+# must be one of:
+# - Linux
+# - MacOS
+# - Windows
 platform=$1
 if [[ $platform = debian ]]; then
     script=debian/buildDebianInstaller
     ext=deb
+    build_platform=Linux
 elif [[ $platform = macos ]]; then
     script=macos/buildMacInstaller
     ext=dmg
+    build_platform=MacOS
 else
     echo $usage
     exit 1
@@ -36,6 +44,7 @@ test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 # Get the version number for the new release.
 echo Retrieving version info...
 version=$(./get-revision $PULL_ID)
+revision=$version
 year=$(TZ=Australia/Brisbane date +%-Y)
 month=$(TZ=Australia/Brisbane date +%-m)
 full_version=$year.$month.$version.0
@@ -53,10 +62,10 @@ bash $apsimx/Setup/netcoreapp3.1/$script $full_version "$outfile"
 
 # Finally, upload the installer.
 echo Uploading installer...
-url=ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
+url="https://builds.apsim.info/api/nextgen/upload/installer?revision=$revision&platform=$build_platform"
 
 function upload() {
-    curl --silent --show-error --user $APSIM_SITE_CREDS --upload-file "$outfile" --retry 3 $url
+    curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$outfile" "$url"
     return $?
 }
 

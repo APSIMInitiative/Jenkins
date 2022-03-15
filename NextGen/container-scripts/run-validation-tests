@@ -47,11 +47,9 @@ then
     # This will generate autodocs to $apsimx/autodocs
     output="$PWD/documents"
     bin/Release/netcoreapp3.1/APSIM.Documentation $output
-    # rsync -arz $version admin@apsimdev.apsim.info:/cygdrive/d/Websites/ApsimX/Releases/
     for f in $output/*
     do
-        curl -s -u "$APSIM_SITE_CREDS" -T "$f" --ftp-create-dirs ftp://apsimdev.apsim.info/ApsimX/Releases/$version/
+        curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$f" "https://builds.apsim.info/api/nextgen/upload/docs?pullRequestNumber=$PULL_ID"
     done
-    echo "Autodocs successfully generated and uploaded to:"
-    echo https://apsimdev.apsim.info/ApsimX/Releases/$version/index.html
+    echo "Autodocs successfully generated and uploaded."
 fi

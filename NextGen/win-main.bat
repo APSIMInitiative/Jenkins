@@ -9,4 +9,4 @@ copy "%APSIM_CERT%" cert\apsim.p12
 
 set container=apsiminitiative/apsimng-build-win
 docker pull -q %container%
-docker run --rm --entrypoint=deploy-win.bat -v "%~dp0container-scripts":C:/container-scripts -v "%cd%\cert":C:\cert -w /container-scripts -e MERGE_COMMIT -e APSIM_CERT=C:\cert\apsim.p12 -e ghprbPullId -e PULL_ID -e APSIM_SITE_CREDS -e APSIM_CERT_PWD -e APSIM_SITE_CREDS %container%
+docker run --rm --entrypoint=deploy-win.bat -v "%~dp0container-scripts":C:/container-scripts -v "%cd%\cert":C:\cert -w /container-scripts -e BUILDS_JWT -e MERGE_COMMIT -e APSIM_CERT=C:\cert\apsim.p12 -e ghprbPullId -e PULL_ID -e APSIM_CERT_PWD %container%

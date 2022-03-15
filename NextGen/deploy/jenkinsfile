@@ -8,9 +8,9 @@ pipeline {
                         label "windows && vm && small"
                     }
                     environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
 				        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
 				        APSIM_CERT = credentials('apsim-code-signing-cert')
+                        BUILDS_JWT = credentials('builds-api-jwt')
                     }
                     steps {
                         bat './NextGen/win-main.bat'
@@ -21,7 +21,7 @@ pipeline {
                         label "linux && vm && small"
                     }
                     environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
+                        BUILDS_JWT = credentials('builds-api-jwt')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer debian'
@@ -32,7 +32,7 @@ pipeline {
                         label "linux && vm && small"
                     }
                     environment {
-                        APSIM_SITE_CREDS = credentials('apsim-site-creds')
+                        BUILDS_JWT = credentials('builds-api-jwt')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer macos'
@@ -56,7 +56,6 @@ pipeline {
                 label "linux && vm && small"
             }
             environment {
-                APSIM_SITE_CREDS = credentials('apsim-site-creds')
 				CHANGE_DB_CREDS = credentials('change-db-creds')
 				NETLIFY_BUILD_HOOK = credentials('netlify-build-hook')
                 BUILDS_JWT = credentials('builds-api-jwt')

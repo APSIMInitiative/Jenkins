@@ -10,7 +10,7 @@ rem PULL_ID: The ID/number of the pull request which triggered this
 rem release.
 rem APSIM_CERT_PWD: Password on the certificate file.
 rem APSIM_CERT: Path to the certificate file on disk.
-rem APSIM_SITE_CREDS: Credentials required to upload the installer.
+rem BUILDS_JWT: JWT for auth with builds API, required to upload the installer.
 
 setlocal enableDelayedExpansion
 setlocal
@@ -20,8 +20,8 @@ if not defined PULL_ID (set PULL_ID=%ghprbPullId%)
 if not defined PULL_ID (echo PULL_ID not set && exit /b 1)
 if not defined APSIM_CERT_PWD (echo APSIM_CERT_PWD not set && exit /b 1)
 if not defined APSIM_CERT (echo APSIM_CERT not set && exit /b 1)
-if not defined APSIM_SITE_CREDS (echo APSIM_SITE_CREDS not set && exit /b 1)
 if not defined MERGE_COMMIT (echo MERGE_COMMIT not set && exit /b 1)
+if not defined BUILDS_JWT (echo BUILDS_JWT not set && exit /b 1)
 
 rem Clone the repository.
 set "apsimx=%TEMP%\ApsimX"
@@ -75,7 +75,8 @@ SignTool verify /pa /v /d %INSTALLER%
 if errorlevel 1 exit /b 1
 
 rem Upload the installer.
-curl -s -u !APSIM_SITE_CREDS! -T "%INSTALLER%" ftp://apsimdev.apsim.info/APSIM/ApsimXFiles/
+set "url=https://builds.apsim.info/api/nextgen/upload/installer?revision=!REVISION!&platform=Windows"
+@curl -s -X POST -H "Authorization: bearer !BUILDS_JWT!" -F "file=@%INSTALLER%" "!url!"
 if errorlevel 1 exit /b 1
 
 endlocal
