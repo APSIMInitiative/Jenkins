@@ -15,6 +15,7 @@ pipeline {
                         NEWDB = credentials('NEWDB')
                         OLDDB = credentials('OLDDB')
                         CollectorURL = credentials('CollectorURL')
+                        BUILDS_JWT = credentials('builds-api-jwt')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./run-validation-tests'
