@@ -65,7 +65,7 @@ echo Uploading installer...
 url="https://builds.apsim.info/api/nextgen/upload/installer?revision=$revision&platform=$build_platform"
 
 function upload() {
-    curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$outfile" "$url"
+    curl --fail -X POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$outfile" "$url"
     return $?
 }
 
