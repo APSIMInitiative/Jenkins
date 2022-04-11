@@ -16,6 +16,7 @@ pipeline {
                         OLDDB = credentials('OLDDB')
                         CollectorURL = credentials('CollectorURL')
                         BUILDS_JWT = credentials('builds-api-jwt')
+                        GITHUB_PAT = credentials('github-pat')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./run-validation-tests'
@@ -24,6 +25,9 @@ pipeline {
                 stage('Unit Tests') {
                     agent {
                         label "linux && vm && small"
+                    }
+                    environment {
+                        GITHUB_PAT = credentials('github-pat')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./run-unit-tests'
