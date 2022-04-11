@@ -16,7 +16,7 @@ test -z ${PULL_ID:+x} && PULL_ID=$ghprbPullId
 test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
 test -z ${MERGE_COMMIT} && MERGE_COMMIT=$sha1
-test -z ${GITHUB_PAT:+x} && { echo "GITHUB_PAT not set"; exit 1 }
+test -z ${GITHUB_PAT:+x} && ( echo "GITHUB_PAT not set"; exit 1 )
 
 # Note: we don't exit early if COMMIT_AUTHOR isn't set. We can get that
 # from the git logs, but not until we've cloned the repo.
@@ -25,17 +25,16 @@ test -z ${GITHUB_PAT:+x} && { echo "GITHUB_PAT not set"; exit 1 }
 url="https://api.github.com/repos/APSIMInitiative/ApsimX/pulls/$PULL_ID"
 json=$(curl -sH "Authorization: token $GITHUB_PAT" "$url")
 body=$(echo "$json" | jq --raw-output ".body")
-issue_reference=$(echo $body | grep -iE '(resolves|working on) #[0-9]+')
-if [ $? -gt 0 ]; then
+echo "$body" | grep -iE '(resolves|working on) #[0-9]+' || (
     echo "PR #$PULL_ID does not reference an issue. You will need to edit the initial PR comment and add 'Working on #xxxx' or 'Resolves #xxxx'."
     echo "You will then need to rerun the test suite. To do this, add another comment on the pull request containing the text 'retest this please jenkins'."
     echo "See https://apsimnextgeneration.netlify.app/contribute/sourcetree/pushandpullrequest/ for more details."
     exit 1
-fi
+)
 
 export PULL_ID COMMIT_AUTHOR
 
-if [ $# -lt 1 ];
+if [ $# -lt 1 ]
 then
     echo $0: Expected at least 1 argument - should be a command to run inside docker container
     exit 1
