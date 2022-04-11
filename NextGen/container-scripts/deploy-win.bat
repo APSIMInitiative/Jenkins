@@ -68,11 +68,11 @@ if errorlevel 1 exit /b 1
 rem Sign the installer.
 rem ----- This requires SignTool.exe to be on PATH.
 rem ----- Also assumes that APSIM_CERT_PWD is an existing environment variable (it's set by jenkins)
-rem set TIMESTAMP="http://timestamp.comodoca.com/?td=sha256"
-rem SignTool sign /q /as /fd sha256 /tr %TIMESTAMP% /td sha256 /f %APSIM_CERT% /p %APSIM_CERT_PWD% %INSTALLER%
-rem if errorlevel 1 exit /b 1
-rem SignTool verify /pa /v /d %INSTALLER%
-rem if errorlevel 1 exit /b 1
+set TIMESTAMP="http://timestamp.comodoca.com/?td=sha256"
+SignTool sign /q /as /fd sha256 /tr %TIMESTAMP% /td sha256 /f %APSIM_CERT% /p %APSIM_CERT_PWD% %INSTALLER%
+if errorlevel 1 exit /b 1
+SignTool verify /pa /v /d %INSTALLER%
+if errorlevel 1 exit /b 1
 
 rem Upload the installer.
 set "url=https://builds.apsim.info/api/nextgen/upload/installer?revision=!REVISION!&platform=Windows"
