@@ -8,6 +8,7 @@ version=$(./get-revision $PULL_ID)
 year=$(TZ=Australia/Brisbane date +%-Y)
 month=$(TZ=Australia/Brisbane date +%-m)
 full_version=$year.$month.$version.0
+echo version=$full_version
 
 cd "$apsimx"
 
