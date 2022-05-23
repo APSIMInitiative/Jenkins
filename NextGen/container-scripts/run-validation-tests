@@ -19,9 +19,11 @@ dotnet build -c Release ApsimX.sln
 soybean=Tests/Validation/Soybean
 wheat=Tests/Validation/Wheat
 cornsoy=Tests/Validation/System/FACTS_CornSoy
+swim=Tests/Validation/System/WaterTableSWIM_ISU_tests_May2022
 7z -p$SOYBEAN_PASSWORD x $soybean/ObservedFACTS.7z -o$soybean
 7z -p$NPI_PASSWORD x $wheat/NPIValidation.7z -o$wheat
 7z -p$CORNSOY_PASSWORD x $cornsoy/FACTS_CornSoy.7z -o$cornsoy
+7z -p$SWIM_PASSWORD x $swim/WaterTableSWIM_ISU_tests_May2022.7z -o$swim
 
 # Run all .apsimx files outside of ./Tests and ./ApsimNG
 find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/netcoreapp3.1/Models.dll --verbose --run-tests

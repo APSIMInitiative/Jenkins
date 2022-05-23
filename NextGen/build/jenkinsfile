@@ -11,6 +11,7 @@ pipeline {
                         SOYBEAN_PASSWORD = credentials('soybean-validation-password')
                         NPI_PASSWORD = credentials('npi-archive-password')
                         CORNSOY_PASSWORD = credentials('cornsoy-archive-password')
+                        SWIM_PASSWORD = credentials('swim-archive-password')
                         TESTDB = credentials('TESTDB')
                         NEWDB = credentials('NEWDB')
                         OLDDB = credentials('OLDDB')
