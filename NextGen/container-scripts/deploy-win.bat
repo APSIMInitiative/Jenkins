@@ -39,8 +39,12 @@ if errorlevel 1 exit /b 1
 echo Done.
 SET /p REVISION=<temp.txt
 del temp.txt
-set YEAR=%date:~10,4%
-set /a MONTH=%date:~4,2%
+for /f "tokens=1,2 delims==" %%i in ('wmic os get LocalDateTime /VALUE 2^>nul') do (
+    if ".%%i."==".LocalDateTime." set mydate=%%j
+)
+set YEAR=%mydate:~0,4%
+rem The line below is to get around set /a MONTH=08 failing because of the leading zero in the month number.
+set /a MONTH=100%mydate:~4,2% %% 100
 set VERSION=%YEAR%.%MONTH%.%REVISION%.0
 set SHORT_VERSION=%YEAR%.%MONTH%.%REVISION%
 echo version=%VERSION%
