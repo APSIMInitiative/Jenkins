@@ -29,6 +29,8 @@ echo "$body" | grep -iE '(resolves|working on) #[0-9]+' || (
     echo "PR #$PULL_ID does not reference an issue. You will need to edit the initial PR comment and add 'Working on #xxxx' or 'Resolves #xxxx'."
     echo "You will then need to rerun the test suite. To do this, add another comment on the pull request containing the text 'retest this please jenkins'."
     echo "See https://apsimnextgeneration.netlify.app/contribute/sourcetree/pushandpullrequest/ for more details."
+    echo body=$body
+    echo json=$json
     exit 1
 )
 
