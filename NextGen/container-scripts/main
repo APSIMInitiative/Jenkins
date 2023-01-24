@@ -11,7 +11,7 @@ set -euo pipefail
 
 echo Cloning ApsimX
 export apsimx="/tmp/ApsimX"
-git clone --quiet https://github.com/APSIMInitiative/ApsimX "$apsimx"
+git clone https://github.com/APSIMInitiative/ApsimX "$apsimx"
 
 echo Checking out PR $PULL_ID
 pushd "$apsimx" >/dev/null
