@@ -9,11 +9,15 @@
 
 set -euo pipefail
 
+echo Cloning ApsimX
 export apsimx="/tmp/ApsimX"
 git clone --quiet https://github.com/APSIMInitiative/ApsimX "$apsimx"
 
+echo Checking out PR $PULL_ID
 pushd "$apsimx" >/dev/null
 git fetch origin +refs/pull/$PULL_ID/*:refs/remotes/origin/pr/$PULL_ID/*
 git checkout origin/pr/$PULL_ID/merge || git checkout $MERGE_COMMIT
+
+echo Buliding ApsimX.sln
 FrameworkPathOverride=/usr/lib/mono/4.7.2-api/ dotnet build -v m --nologo -c Release ApsimX.sln
 popd >/dev/null
