@@ -57,8 +57,7 @@ echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\ApsimNG\Properties\AssemblyVersion.cs"
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\APSIM.Server\Properties\AssemblyVersion.cs"
 rem Build the solution.
-dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\ApsimNG\ApsimNG.csproj"
-dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\Models\Models.csproj"
+dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\ApsimX.sln"
 if errorlevel 1 exit /b 1
 
 rem Generate the installer.
