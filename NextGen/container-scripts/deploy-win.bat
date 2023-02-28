@@ -57,7 +57,14 @@ echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\ApsimNG\Properties\AssemblyVersion.cs"
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\APSIM.Server\Properties\AssemblyVersion.cs"
 rem Build the solution.
-dotnet publish -c Release -f netcoreapp3.1 -r win-x64 --no-self-contained "%apsimx%\ApsimX.sln"
+
+rem Without the -m:1 below, the order of builds can be incorrect sometimes resulting in this order:
+rem     Models -> C:\container-scripts\ApsimX\bin\Release\netcoreapp3.1\win-x64\Models.dll
+rem     Models -> C:\container-scripts\ApsimX\bin\Release\netcoreapp3.1\Models.dll
+rem     Models -> C:\container-scripts\ApsimX\bin\Release\netcoreapp3.1\win-x64\publish\Models.dll
+rem This can lead to an incorrect  publish\models.deps.json. taken from netcoreapp3.1 directory rather than from netcoreapp3.1\win-x64 directory
+rem bug: https://github.com/APSIMInitiative/ApsimX/issues/7829
+dotnet publish -c Release -f netcoreapp3.1 -r win-x64 -m:1 --no-self-contained "%apsimx%\ApsimX.sln"
 if errorlevel 1 exit /b 1
 
 rem Generate the installer.
