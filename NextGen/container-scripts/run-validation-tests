@@ -24,7 +24,7 @@ swim=Tests/Validation/SWIM
 7z -p$SWIM_PASSWORD x $swim/WaterTableSWIM_ISU_tests_May2022.7z -o$swim
 
 # Run all .apsimx files outside of ./Tests and ./ApsimNG
-find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/netcoreapp3.1/Models.dll --verbose --run-tests
+find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/net6.0/Models.dll --verbose --run-tests
 
 # Get date in yyyy.M.d-HH:mm format
 TIMESTAMP=`date +%Y.%-m.%-d-%H:%M`
@@ -38,7 +38,7 @@ cd APSIM.PerformanceTests
 git checkout refactor
 collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
-dotnet $collector/bin/Release/netcoreapp3.1/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
+dotnet $collector/bin/Release/net6.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
 
 # Build Autodocs
 autodocs=APSIM.Documentation
@@ -47,7 +47,7 @@ if [[ -d $autodocs ]]
 then
     # This will generate autodocs to $apsimx/autodocs
     output="$PWD/documents"
-    bin/Release/netcoreapp3.1/APSIM.Documentation $output
+    bin/Release/net6.0/APSIM.Documentation $output
     for f in $output/*
     do
         curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$f" "https://builds.apsim.info/api/nextgen/upload/docs?pullRequestNumber=$PULL_ID"
