@@ -23,7 +23,7 @@ test -z ${GITHUB_PAT:+x} && ( echo "GITHUB_PAT not set"; exit 1 )
 
 # Ensure that the author of the pull request has referenced an issue.
 url="https://api.github.com/repos/APSIMInitiative/ApsimX/pulls/$PULL_ID"
-json=$(curl -sH "Authorization: token $GITHUB_PAT" "$url")
+json=$(curl -s "$url")
 body=$(echo "$json" | jq --raw-output ".body")
 echo "$body" | grep -iE '(resolves|working on) #[0-9]+' || (
     echo "PR #$PULL_ID does not reference an issue. You will need to edit the initial PR comment and add 'Working on #xxxx' or 'Resolves #xxxx'."
