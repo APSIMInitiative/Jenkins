@@ -54,3 +54,4 @@ build_image() {
 build_image apsimng
 build_image apsimng-complete
 build_image apsimng-server
+build_image apsimng-gui
