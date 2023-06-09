@@ -35,7 +35,7 @@ test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR="$(git log -1 --pretty=%an)"
 cd ..
 git clone https://github.com/APSIMInitiative/APSIM.PerformanceTests APSIM.PerformanceTests
 cd APSIM.PerformanceTests
-git checkout refactor
+git checkout master
 collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
 dotnet $collector/bin/Release/net6.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
