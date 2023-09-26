@@ -25,11 +25,15 @@ if not defined BUILDS_JWT (echo BUILDS_JWT not set && exit /b 1)
 
 rem Clone the repository.
 set "apsimx=%TEMP%\ApsimX"
+echo About to clone APSIMX repo.
 git clone https://github.com/APSIMInitiative/ApsimX "%apsimx%"
+echo Clone completed
 if errorlevel 1 exit /b 1
 cd "%apsimx%"
 rem Checkout the pull request's merge commit.
+echo About to checkout branch
 git checkout %MERGE_COMMIT%
+echo Checkout completed.
 if errorlevel 1 exit /b 1
 
 rem Get version info.
