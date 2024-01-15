@@ -59,7 +59,6 @@ echo [assembly: AssemblyVersion("%VERSION%")] >> "%apsimx%\Models\Properties\Ass
 echo [assembly: AssemblyFileVersion("%VERSION%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 echo [assembly: AssemblyCopyright("Copyright © APSIM Initiative %YEAR%")] >> "%apsimx%\Models\Properties\AssemblyVersion.cs"
 copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\ApsimNG\Properties\AssemblyVersion.cs"
-copy /y "%apsimx%\Models\Properties\AssemblyVersion.cs" "%apsimx%\APSIM.Server\Properties\AssemblyVersion.cs"
 rem Build the solution.
 
 rem Without the -m:1 below, the order of builds can be incorrect sometimes resulting in this order:
