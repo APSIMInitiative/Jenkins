@@ -3,7 +3,7 @@ pipeline {
     options {
         // Timeout counter starts AFTER agent is allocated
         timeout(time: 45, unit: 'MINUTES')
-    }    
+    }
     stages {
         stage('main') {
             parallel {
@@ -20,6 +20,7 @@ pipeline {
                         NEWDB = credentials('NEWDB')
                         OLDDB = credentials('OLDDB')
                         CollectorURL = credentials('CollectorURL')
+                        POSTATS_UPLOAD_URL = credentials('POSTATS_UPLOAD_URL')
                         BUILDS_JWT = credentials('builds-api-jwt')
                         GITHUB_PAT = credentials('github-pat')
                     }
