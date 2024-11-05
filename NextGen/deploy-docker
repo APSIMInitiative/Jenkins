@@ -46,7 +46,7 @@ build_image() {
     # Build image, then login and push to dockerhub.
     docker build --build-arg version=$version --build-arg commit=$MERGE_COMMIT -t $full_image --target $image .
     docker tag $full_image $image_latest
-    docker login -u hol430 -p"$DOCKERHUB_TOKEN"
+    docker login -u apsimbot -p"$DOCKERHUB_TOKEN"
     docker push $full_image
     docker push $image_latest
 }
