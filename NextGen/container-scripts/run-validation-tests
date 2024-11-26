@@ -40,17 +40,3 @@ collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
 dotnet $collector/bin/Release/net6.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
 
-# # Build Autodocs
-# autodocs=APSIM.Documentation
-# cd "$apsimx"
-# if [[ -d $autodocs ]]
-# then
-#     # This will generate autodocs to $apsimx/autodocs
-#     output="$PWD/documents"
-#     bin/Release/net6.0/APSIM.Documentation $output
-#     for f in $output/*
-#     do
-#         curl -fsX POST -H "Authorization: bearer $BUILDS_JWT" -F "file=@$f" "https://builds.apsim.info/api/nextgen/upload/docs?pullRequestNumber=$PULL_ID"
-#     done
-#     echo "Autodocs successfully generated and uploaded."
-# fi
