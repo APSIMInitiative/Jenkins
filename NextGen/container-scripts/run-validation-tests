@@ -24,7 +24,7 @@ swim=Tests/Validation/SWIM
 7z -p$SWIM_PASSWORD x $swim/WaterTableSWIM_ISU_tests_May2022.7z -o$swim
 
 # Run all .apsimx files outside of ./Tests and ./ApsimNG
-find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/net6.0/Models.dll --verbose --run-tests
+find . -not \( -path ./Tests/UnitTests -prune \) -not \( -path ./ApsimNG -prune \)  -name '*.apsimx' -print0 | xargs -0 dotnet bin/Release/net8.0/Models.dll --verbose --run-tests
 
 # Get date in yyyy.M.d-HH:mm format
 TIMESTAMP=`date +%Y.%-m.%-d-%H:%M`
@@ -38,5 +38,5 @@ cd APSIM.PerformanceTests
 git checkout master
 collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
-dotnet $collector/bin/Release/net6.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
+dotnet $collector/bin/Release/net8.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
 

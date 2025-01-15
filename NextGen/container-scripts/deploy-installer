@@ -58,7 +58,7 @@ cd $apsimx
 # Build the installer.
 echo Building installer...
 outfile="$DIR"/apsim-$version.$ext
-bash $apsimx/Setup/net6.0/$script $full_version "$outfile"
+bash $apsimx/Setup/net8.0/$script $full_version "$outfile"
 
 # Finally, upload the installer.
 echo Uploading installer...
