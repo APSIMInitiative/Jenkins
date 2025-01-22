@@ -14,7 +14,7 @@ pipeline {
 				        APSIM_CERT = credentials('apsim-code-signing-cert')
                     }
                     steps {
-                        bat './NextGen/jenkins-main ./deploy-installer windows'
+                        sh './NextGen/jenkins-main ./deploy-installer windows'
                     }
                 }
                 stage('Debian Installer') {
