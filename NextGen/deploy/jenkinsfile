@@ -5,15 +5,16 @@ pipeline {
             parallel {
                 stage('Windows Installer') {
                     agent {
-                        label "windows && vm && small"
+                        label "linux && vm && small"
                     }
                     environment {
+                        BUILDS_JWT = credentials('builds-api-jwt')
+                        GITHUB_PAT = credentials('github-pat')
 				        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
 				        APSIM_CERT = credentials('apsim-code-signing-cert')
-                        BUILDS_JWT = credentials('builds-api-jwt')
                     }
                     steps {
-                        bat './NextGen/win-main.bat'
+                        bat './NextGen/jenkins-main ./deploy-installer windows'
                     }
                 }
                 stage('Debian Installer') {
