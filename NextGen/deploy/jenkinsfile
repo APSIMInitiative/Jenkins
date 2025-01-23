@@ -67,6 +67,8 @@ pipeline {
 				NETLIFY_BUILD_HOOK = credentials('netlify-build-hook')
                 BUILDS_JWT = credentials('builds-api-jwt')
                 GITHUB_PAT = credentials('github-pat')
+                APSIM_CERT_PWD = credentials('apsim-cert-pwd')
+                APSIM_CERT = credentials('apsim-code-signing-cert')
             }
             steps {
                 sh './NextGen/jenkins-main ./deploy'
