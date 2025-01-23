@@ -17,8 +17,8 @@ test -z ${PULL_ID:+x} && ( echo "PULL_ID not set"; exit 1 )
 test -z ${COMMIT_AUTHOR:+x} && COMMIT_AUTHOR=$ghprbActualCommitAuthor
 test -z ${MERGE_COMMIT} && MERGE_COMMIT=$sha1
 test -z ${GITHUB_PAT:+x} && ( echo "GITHUB_PAT not set"; exit 1 )
-test -z ${APSIM_CERT:+x} && ( echo "APSIM_CERT not set (Only Required for Windows)" )
-test -z ${APSIM_CERT_PWD:+x} && ( echo "APSIM_CERT_PWD not set (Only Required for Windows)" )
+test -z ${APSIM_CERT:+x} && ( echo "APSIM_CERT not set"; exit 1  )
+test -z ${APSIM_CERT_PWD:+x} && ( echo "APSIM_CERT_PWD not set"; exit 1  )
 
 # Note: we don't exit early if COMMIT_AUTHOR isn't set. We can get that
 # from the git logs, but not until we've cloned the repo.
