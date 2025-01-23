@@ -10,8 +10,8 @@ pipeline {
                     environment {
                         BUILDS_JWT = credentials('builds-api-jwt')
                         GITHUB_PAT = credentials('github-pat')
-				        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
-				        APSIM_CERT = credentials('apsim-code-signing-cert')
+                        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
+                        APSIM_CERT = credentials('apsim-code-signing-cert')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer windows'
@@ -24,6 +24,8 @@ pipeline {
                     environment {
                         BUILDS_JWT = credentials('builds-api-jwt')
                         GITHUB_PAT = credentials('github-pat')
+                        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
+                        APSIM_CERT = credentials('apsim-code-signing-cert')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer debian'
@@ -36,6 +38,8 @@ pipeline {
                     environment {
                         BUILDS_JWT = credentials('builds-api-jwt')
                         GITHUB_PAT = credentials('github-pat')
+                        APSIM_CERT_PWD = credentials('apsim-cert-pwd')
+                        APSIM_CERT = credentials('apsim-code-signing-cert')
                     }
                     steps {
                         sh './NextGen/jenkins-main ./deploy-installer macos'
