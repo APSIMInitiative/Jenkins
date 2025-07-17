@@ -38,5 +38,4 @@ cd APSIM.PerformanceTests
 git checkout master
 collector=APSIM.POStats.Collector
 dotnet build -v m -c Release $collector/$collector.csproj
-dotnet $collector/bin/Release/net8.0/$collector.dll "$PULL_ID" "$TIMESTAMP" "$COMMIT_AUTHOR" "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
-
+dotnet $collector/bin/Release/net8.0/$collector.dll "jenkins" "$PULL_ID" "0" "$COMMIT_AUTHOR" "$TIMESTAMP"  "$apsimx/Tests/Validation" "$apsimx/Tests/UnderReview"
